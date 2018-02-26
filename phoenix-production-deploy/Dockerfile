@@ -1,10 +1,11 @@
 FROM elixir:1.6.1-alpine
 
 # Environment Variables
-ENV APP_NAME hello_world
 ENV APP_DIR /app
 ENV MIX_ENV prod
 ENV PORT 4000
+ENV SECRET_KEY_BASE changeme
+ENV REPLACE_OS_VARS true
 
 # Dependencies
 RUN mix local.hex --force
@@ -37,4 +38,6 @@ RUN mix release
 
 # Run server
 EXPOSE 4000
-CMD [ "_build/prod/rel/${APP_NAME}/bin/${APP_NAME}", "foreground" ]
+
+# Change APP_NAME to your applications name
+CMD [ "_build/prod/rel/APP_NAME/bin/APP_NAME", "foreground" ]
