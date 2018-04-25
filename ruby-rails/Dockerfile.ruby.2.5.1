@@ -1,0 +1,31 @@
+FROM ruby:2.5.1
+
+# Set default Rails environment
+ENV RAILS_ENV production
+
+# Install Rails dependencies
+# any gems that have native dependencies
+# should probably install those here
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    postgresql-client \
+    build-essential \
+    nodejs
+
+# Set working directory
+WORKDIR /usr/src/app
+
+# Copy existing Gemfile (which should specify Rails and Gem versions)
+COPY Gemfile* ./
+
+# Bundle gems
+RUN bundle install
+
+# Copy application code
+COPY . .
+
+# Expose default rails port
+EXPOSE 3000
+
+# Start rails server
+CMD ["rails", "server", "-b", "0.0.0.0"]
